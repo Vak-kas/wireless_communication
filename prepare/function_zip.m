@@ -352,4 +352,16 @@ function [Repeat_bit_data]  = REP_FEC(bit_data, Repeat_time)
     Repeat_bit_data = repmat(bit_data, 1, Repeat_time);
 end
 
+function [bit_data] = FEC_check(Repeat_bit_data, Repeat_time)
+    bit_data = zeros(1, length(Repeat_bit_data/Repeat_time));
+    for i = 1:nSymbol
+        s = 0;
+        for j  = 1:Repeat_time
+            s = s + Repeat__bit_data(nSymbol*(j-1)+i);    
+        end
+        bit_data(i) = round((s/Repeat_time));
+    end
+
+end
+
 
