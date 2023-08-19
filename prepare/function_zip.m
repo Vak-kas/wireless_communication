@@ -1,5 +1,3 @@
-clear variables;
-clc;
 %% Mapping Function
 % BPSK_Mapping
 function [modulated_symbol] = BPSK_Mapping(data)
@@ -138,31 +136,32 @@ end
 function [modulated_symbol] = QAM_Mapping(data)
     modulated_symbol = zeros(1, length(data));
     
-    modulated_symbol(data == 0) = (-3-3j);
-    modulated_symbol(data == 1) = (-3-1j);
-    modulated_symbol(data == 2) = (-3+1j);
-    modulated_symbol(data == 3) = (-3+3j);
-    modulated_symbol(data == 4) = (-1+3j);
-    modulated_symbol(data == 5) = (-1+1j);
-    modulated_symbol(data == 6) = (-1-1j);
-    modulated_symbol(data == 7) = (-1-3j);
-    modulated_symbol(data == 8) = (+1-3j);
-    modulated_symbol(data == 9) = (1-1j);
-    modulated_symbol(data == 10) = (1+1j);
-    modulated_symbol(data == 11) = (1+3j);
-    modulated_symbol(data == 12) = (3+3j);
-    modulated_symbol(data == 13) = (3+1j);
-    modulated_symbol(data == 14) = (3-1j);
-    modulated_symbol(data == 15) = (3-3j);
+    modulated_symbol(data == 0) = (-3-3j)/sqrt(10);
+    modulated_symbol(data == 1) = (-3-1j)/sqrt(10);
+    modulated_symbol(data == 2) = (-3+1j)/sqrt(10);
+    modulated_symbol(data == 3) = (-3+3j)/sqrt(10);
+    modulated_symbol(data == 4) = (-1+3j)/sqrt(10);
+    modulated_symbol(data == 5) = (-1+1j)/sqrt(10);
+    modulated_symbol(data == 6) = (-1-1j)/sqrt(10);
+    modulated_symbol(data == 7) = (-1-3j)/sqrt(10);
+    modulated_symbol(data == 8) = (+1-3j)/sqrt(10);
+    modulated_symbol(data == 9) = (1-1j)/sqrt(10);
+    modulated_symbol(data == 10) = (1+1j)/sqrt(10);
+    modulated_symbol(data == 11) = (1+3j)/sqrt(10);
+    modulated_symbol(data == 12) = (3+3j)/sqrt(10);
+    modulated_symbol(data == 13) = (3+1j)/sqrt(10);
+    modulated_symbol(data == 14) = (3-1j)/sqrt(10);
+    modulated_symbol(data == 15) = (3-3j)/sqrt(10);
+    
 
 end
 
 % 16QAM DeMapping
-function [recovered_data] = QAM_DeMapping(received_symbol)
+function [recovered_data] = QAM_DeMapping(received_symbol, transmit_power)
     recovered_data = zeros(1, length(received_symbol));
     for i = 1:length(received_symbol)
-        x = real(received_symbol(i))/sqrt(10);
-        y = imag(received_symbol(i))/sqrt(10);
+        x = real(received_symbol(i))/sqrt(transmit_power);
+        y = imag(received_symbol(i))/sqrt(transmit_power);
 
         if x <-2/sqrt(10) &&  x > -4/sqrt(10)
             if y>-4/sqrt(10) && y<-2/sqrt(10)
@@ -363,5 +362,3 @@ function [bit_data] = FEC_check(Repeat_bit_data, Repeat_time)
     end
 
 end
-
-
