@@ -8,10 +8,11 @@ SNR_linear = 10.^(SNR_dB/10); %Signal Power
 M = 2;  %2 = BPSK
 nSymbol =4;
 test_time = 10000;
+alpha = 1.2;
 % h = sqrt(1/2)*(randn(1, length(nSymbol)) + 1j*randn(1, length(nSymbol)) ); %무선 채널의 개수(h(n))
 % noise = sqrt(1/2)*(  randn(1, nSymbol) +1j*randn(1, nSymbol) );
 
-bit_data = [1 1 1 1];
+bit_data = ones(1, nSymbol);
 
 
 SER = zeros(1, length(SNR_dB));
@@ -28,7 +29,7 @@ for i = 1:1:length(SNR_dB)
         %% key value (share)
         key = zeros(1, nSymbol);
         for k = 1:nSymbol
-            if abs(h(k)) > 1.2
+            if abs(h(k)) > alpha
                 key(k) = 1;
             else
                 key(k) = 0;
@@ -60,6 +61,7 @@ for i = 1:1:length(SNR_dB)
         
         %% Transmission System
         % fading
+        
         transmit_power = SNR_linear(i); % 출력세기 (y(n))
         transmission_symbol = sqrt(transmit_power)*modulated_symbol.*h + noise; %sqrt(P)*h*x + noise
     
